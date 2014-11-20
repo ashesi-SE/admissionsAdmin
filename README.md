@@ -9,3 +9,5 @@ Team Members
 * Chris Ampadu
 * Winifred Quartey-Papafio
 * Niena Rahma Alhassan
+
+Visit our Home page: https://github.com/ashesi-SE/admissionsAdmin/wiki
