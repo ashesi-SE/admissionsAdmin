@@ -26,7 +26,7 @@
             if (login($username, $password)) {
                 session_start(); //initiate session for the current login
                 loadUserProfile($username); //load user information into the session
-                header("location: gridIndex.php"); //redirect to home page
+                header("location: admissions.php"); //redirect to home page
                 echo "<a href='gridIndex.php'>click here</a>"; //if redirect fails, provide a link
                 exit();
             } else{
