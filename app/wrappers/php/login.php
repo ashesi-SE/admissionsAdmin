@@ -2,8 +2,93 @@
 
 <!DOCTYPE html>
 <html >
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Data Saver : Login</title>
+        <!--icon-->
+        <link href="img/Ashesi.png" rel="icon" />
+        <!-- BOOTSTRAP STYLES-->
+        <link href="css/bootstrap.css" rel="stylesheet" />
+        <!-- FONTAWESOME STYLES-->
+        <link href="css/font-awesome.css" rel="stylesheet" />
+        <!-- CUSTOM STYLES-->
+        <link href="css/datasaver.css" rel="stylesheet" />
+        <!-- GOOGLE FONTS-->
+        <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' /> -->
+    </head>
+      <?php
+            if (isset($_REQUEST['username'])) {
+                //the login form has been submitted
+                $username = $_REQUEST['username'];
+                $password = $_REQUEST['password'];
+                //call login to check username and password
+                if (login($username, $password)) {
+                    session_start(); //initiate session for the current login
+                    loadUserProfile($username); //load user information into the session
+                    header("location: admissions.php"); //redirect to home page
+                    echo "<a href='login.php'>click here</a>"; //if redirect fails, provide a link
+                    exit();
+                } else {
+                    //if login returns false, then something is worng
+                    $msg = "username or password is wrong";
+                }
+            }
+        ?>
 
 
+<body>
+    <!-- Navigation Bar, fixed to top -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+    </nav>
+
+    <div id="wrapper">
+        <div class="col-xs-10 col-xs-offset-1  col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+            <div class="signup">
+                <!--SIGN UP Modal-->
+                <form method = "post" action ="login.php">
+                    <div class="text-center">
+                        <img src="img/Ashesi.png" class="text-center">
+                    </div>
+                    <div class="input-group col-xs-12 padding-10">
+                        <input id="btn-input" name = 'username' type="text" class="form-control input-md margin-10" placeholder="Username">
+                        <input id="btn-input" name = 'password' type="password" class="form-control input-md margin-10" placeholder="Password">
+                    </div>
+                    <div class="btn-group, text-center">
+                        <input class="btn btn-lg btn-primary" type="submit" name="login_btn" id="login_btn" value="Login">
+                    </div>
+                   
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <!-- /. WRAPPER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- CUSTOM SCRIPTS 
+    <script src="assets/js/custom.js"></script>-->
+
+
+</body>
+
+</html>
+<!--
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,30 +97,8 @@
     </head>
 
     <body>
-        <?php
-//$username = "";
-//$password = "";
-
-
-
-        if (isset($_REQUEST['username'])) {
-            //the login form has been submitted
-            $username = $_REQUEST['username'];
-            $password = $_REQUEST['password'];
-            //call login to check username and password
-            if (login($username, $password)) {
-                session_start(); //initiate session for the current login
-                loadUserProfile($username); //load user information into the session
-                header("location: admissions.php"); //redirect to home page
-                echo "<a href='gridIndex.php'>click here</a>"; //if redirect fails, provide a link
-                exit();
-            } else{
-			//if login returns false, then something is worng
-			$msg="username or password is wrong";
-		}
-        }
-        ?>
-
+-->      
+<!--
         <form action="login.php" method="POST">
             <table border="1" align="center" width="50%" id="margin">
                 <tr><td>
@@ -74,7 +137,7 @@
     </body>
 
 </html>
-
+-->
 <?php
 
 function login($username, $password) {
@@ -83,42 +146,21 @@ function login($username, $password) {
     $link = mysql_pconnect("localhost", "root", "Dream1234") or die("Unable To Connect To Database Server");
     $db = mysql_select_db("ashadmission") or die("Unable To Connect To Admissions");
 
-//    DEFINE('DBUSER', 'root');
-//    DEFINE('DBPW', 'Dream1234');
-//    DEFINE('DBHOST', 'localhost');
-//    DEFINE('DBNAME', 'ashadmission');
-//
-//    $conn = mysql_connect(DBHOST, DBUSER, DBPW);
-//
-//    if (!$conn) {
-//        die('Could not connect: ' . myql_error());
-//    }
-//
-//    $db_conn = mysql_select_db(DBNAME, $conn);
-//    $pword = $password;
-//    if ($db) {
-//        $query = "SELECT email, firstName, lastName, FROM users WHERE email='$username' AND password='$password'";
-//        $result = mysql_query($query);
-//    } else {
-//        echo mysql_error();
-//    }
-    if(mysql_query("SELECT email, firstName, lastName FROM users WHERE email= '$username' AND password='$password'")){
-          return true;
-    }else{
-         echo mysql_error();
+    if ($response = mysql_query("SELECT email, firstName, lastName, role FROM users WHERE email= '$username' AND password='$password'")) {
+        $row = $response->mysql_fetch_assoc();
+        $userName= $row['email'];
+        $role=$row['role'];
+        loadUserProfile($userName,$role);
+        return true;
+    } else {
+        echo mysql_error();
         return false;
     }
-
-
-//    if (!$result) {
-//        return false;
-//    } else {
-//        return true;
-//    }
 }
 
-function loadUserProfile($username) {
+function loadUserProfile($username,$role) {
     $_SESSION['username'] = $username;
+    $_SESSION['role'] = $role;
     //$_SESSION['fullname'] = $fullname;
 }
 ?>

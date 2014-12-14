@@ -1,3 +1,10 @@
+<?php
+session_start(); //start session
+if (!isset($_SESSION['username'])) { //check if the user data is in the session
+    header("location: login.php"); //if not redirect back to user
+}
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,12 +19,12 @@
 
         <!-- Le styles -->
         <link href="bootstrap.css" rel="stylesheet">
-        <link href="custom.css" rel="stylesheet">
-        <link rel="stylesheet" media="screen" href="css/login.css">
-        <link href="bootstrap.css" rel="stylesheet">
+        <link href="bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../styles/kendo.dataviz.min.css" />
+        <link rel="stylesheet" href="../../styles/kendo.dataviz.default.min.css" />
         <script src="../../js/jquery.min.js"></script>
         <script src="../../js/kendo.web.min.js"></script>
-        <style type="text/css">
+      <!--  <style type="text/css">
             body{
                 width: 1100px;
                 height:500px;
@@ -42,7 +49,7 @@
             }   
 
         </style>
-        <link rel="shortcut icon" href="ico/favicon.png">
+        <link rel="shortcut icon" href="ico/favicon.png">-->
     </head>
 
     <body>
@@ -54,55 +61,30 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="brand"><b>Admission Admin</b></a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                            <li><a href="index.php">DASH BOARD</a></li>
-                            <li><a href="#">USER ACCOUNTS</a></li>
-                            <!--<li><a href="#"></a></li>-->
-                            <li><a href="#">FAQ</a></li>  
+                             <li class="active"><a href="admissions.php"><b>Admissions </b><i class="icon-chevron-right"></i></a></li>
+                            <li ><a href="applications.php"><b>Applications </b><i class="icon-chevron-right"></i></a></li>
+                            <li ><a href="applicants.php"> <b>Applicants</b> <i class="icon-chevron-right"></i></a></li>
+                            <li><a href="ashesiSiblings.php"> <b>Ashesi Siblings</b> <i class="icon-chevron-right"></i></a></li>
+                            <li><a href="seasons.php"> <b>Seasons</b> <i class="icon-chevron-right"></i></a></li> 
+                            <li ><a href="users.php"> <b>Users</b> <i class="icon-chevron-right"></i></a></li> 
+                            <li  ><a href="logs.php"> <b>Logs</b> <i class="icon-chevron-right"></i></a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
 
-                    <div class="top-right-corner">
+                 <div class="top-right-corner">
                         <span class="white-text">USERS|</span>
                         <span><a id="logout" href="AdminLOG.php">LOG OUT</a></span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container-fluid">
-
-            <!-- Main hero unit for a primary marketing message or call to action -->
-
-            <br>
-            <div class="row-fluid">
-
-                <div class="span3">
-                    <br><br><br>
-                    <ul class="nav nav-list sidenav">
-                        <li class="active" ><a href="admissions.php"><center><b>Admissions </b></center><i class="icon-chevron-right"></i></a></li>
-
-                        <li ><a href="applicants.php"><center><b>Applicants</b></center><i class="icon-chevron-right"></i></a></li>
-
-                        <li><a href="ashesiSiblings.php"><center><b>Ashesi Siblings</b></center><i class="icon-chevron-right"></i></a></li>
-
-                        <li><a href="seasons.php"><center><b>Seasons</b></center><i class="icon-chevron-right"></i></a></li>           
-<!--
-                        <li ><a href="#"><center><b>CURRENT ADMISSION UPDATES  </b></center><i class="icon-chevron-right"></i></a></li>
-
-                        <li><a href="#"><center><b> VIEW APPLICATIONS </b></center><i class="icon-chevron-right"></i></a></li>-->
-
-                    </ul>
-                </div>
-                <div class="span9" >
+      
+                <div>
                     <h1><center><i>ADMISSIONS</i></center></h1>
                     <br>
                     <?php
-                    session_start(); //start session
-                    if (!isset($_SESSION['username'])) { //check if the user data is in the session
-                        header("location: login.php"); //if not redirect back to user
-                    }
                     require_once 'lib/Kendo/Autoload.php';
 
                     $transport = new \Kendo\Data\DataSourceTransport();
@@ -223,8 +205,9 @@
 
                     // Configure data source - set transport, schema and enable batch mode
                     $dataSource->transport($transport)
-                            ->batch(true)
-                            ->schema($schema);
+                            ->pageSize(10)
+                            ->schema($schema)
+                            ->batch(true);
 
                     $grid = new \Kendo\UI\Grid('grid');
 
@@ -260,6 +243,9 @@
 
                     $grid->addColumn($major, $appliedBefore, $appliedBeforeYear, $wantsHousing, $wantsFinAid)
                             ->dataSource($dataSource)
+                            ->sortable(true)
+                            ->filterable(true)
+                            ->pageable(true)
 //                    ->addToolbarItem(new \Kendo\UI\GridToolbarItem('create'), new \Kendo\UI\GridToolbarItem('save'), new \Kendo\UI\GridToolbarItem('cancel'))
 //                    ->editable(true)
                             ->height(300);
@@ -267,16 +253,8 @@
                     //Output the grid by echo-ing the result of the render method.
                     echo $grid->render();
                     ?>
-                </div>
-            </div>
-            <hr>
+             
 
-            <hr>
-
-            <footer>
-                <p>&copy; Team4G</p>
-            </footer>
-           
         </div>
     </body>
 </html>

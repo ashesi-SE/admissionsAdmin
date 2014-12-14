@@ -4,6 +4,7 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
     header("location: login.php"); //if not redirect back to user
 }
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,11 +20,13 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
         <!-- Le styles -->
         <link href="bootstrap.css" rel="stylesheet">
         <link href="bootstrap.min.css" rel="stylesheet">
+
         <link rel="stylesheet" href="../../styles/kendo.dataviz.min.css" />
         <link rel="stylesheet" href="../../styles/kendo.dataviz.default.min.css" />
+
         <script src="../../js/jquery.min.js"></script>
         <script src="../../js/kendo.web.min.js"></script>
-
+ 
     </head>
 
     <body>
@@ -37,28 +40,31 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
                     </button>
                    <div class="nav-collapse collapse">
                         <ul class="nav">
-                           <li><a href="admissions.php"><b>Admissions </b><i class="icon-chevron-right"></i></a></li>
-                            <li ><a href="applications.php"><b>Applications </b><i class="icon-chevron-right"></i></a></li>
+                            <li><a href="admissions.php"><b>Admissions </b><i class="icon-chevron-right"></i></a></li>
+                            <li><a href="applications.php"><b>Applications </b><i class="icon-chevron-right"></i></a></li>
                             <li><a href="applicants.php"> <b>Applicants</b> <i class="icon-chevron-right"></i></a></li>
-                            <li class="active"><a href="ashesiSiblings.php"> <b>Ashesi Siblings</b> <i class="icon-chevron-right"></i></a></li>
+                            <li><a href="ashesiSiblings.php"> <b>Ashesi Siblings</b> <i class="icon-chevron-right"></i></a></li>
                             <li><a href="seasons.php"> <b>Seasons</b> <i class="icon-chevron-right"></i></a></li> 
-                            <li ><a href="users.php"> <b>Users</b> <i class="icon-chevron-right"></i></a></li>   
-                            <li  ><a href="logs.php"> <b>Logs</b> <i class="icon-chevron-right"></i></a></li>
+                            <li><a href="users.php"> <b>Users</b> <i class="icon-chevron-right"></i></a></li>
+                            <li class="active" ><a href="logs.php"> <b>Logs</b> <i class="icon-chevron-right"></i></a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
 
-
+                    <div class="top-right-corner">
+                        <span class="white-text">USERS|</span>
+                        <span><a id="logout" href="AdminLOG.php">LOG OUT</a></span>
+                    </div>
                 </div>
             </div>
         </div>
 
-
-     
         <div >
-            <h1><center><i>ASHESI SIBLINGS</i></center></h1>
+            <h1><center><i>LOGS</i></center></h1>
             <br>
             <?php
+            require_once 'lib/DataSourceResult.php';
             require_once 'lib/Kendo/Autoload.php';
+
 
             $transport = new \Kendo\Data\DataSourceTransport();
 
@@ -73,7 +79,7 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
 
             $read = new \Kendo\Data\DataSourceTransportRead();
 
-            $read->url('grid.php?type=read_ashesiSiblings')
+            $read->url('grid.php?type=read_logs')
                     ->contentType('application/json')
                     ->type('POST');
 
@@ -99,46 +105,41 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
             // Configure the model
             $model = new \Kendo\Data\DataSourceSchemaModel();
 
-            $ashesiSiblingIDField = new \Kendo\Data\DataSourceSchemaModelField('ashesi_sibling_id');
-            $ashesiSiblingIDField->type('number')
+            $logsIDField = new \Kendo\Data\DataSourceSchemaModelField('id');
+            $logsIDField->type('number')
                     ->editable(false)
                     ->nullable(true);
 
-            $admissionIDField = new \Kendo\Data\DataSourceSchemaModelField('admission_id');
-            $admissionIDField->type('number')
-                    ->editable(false)
-                    ->nullable(true);
+            $typeField = new \Kendo\Data\DataSourceSchemaModelField('type');
+            $typeField->type('string');
+//                    ->validation(array('required' => true));
 
-            $applicationIDField = new \Kendo\Data\DataSourceSchemaModelField('application_id');
-            $applicationIDField->type('number')
-                    ->editable(false)
-                    ->nullable(true);
-
-            $nameField = new \Kendo\Data\DataSourceSchemaModelField('name');
-            $nameField->type('string')
-                    ->validation(array('required' => true));
-
-            $relationshipField = new \Kendo\Data\DataSourceSchemaModelField('relationship');
-            $relationshipField->type('string');
-
-            $yearField = new \Kendo\Data\DataSourceSchemaModelField('year');
-            $yearField->type('string');
-
-            $creatorField = new \Kendo\Data\DataSourceSchemaModelField('creator');
-            $creatorField->type('string');
-
+            $messageField = new \Kendo\Data\DataSourceSchemaModelField('message');
+            $messageField->type('string');
+            
             $datecreatedField = new \Kendo\Data\DataSourceSchemaModelField('created');
             $datecreatedField->type('date');
 
-            $dateModifiedField = new \Kendo\Data\DataSourceSchemaModelField('modified');
-            $dateModifiedField->type('date');
+            $ipField = new \Kendo\Data\DataSourceSchemaModelField('ip');
+            $ipField->type('string');
 
-            $model->id('ashesi_sibling_id')
-                    ->addField($nameField)
-                    ->addField($relationshipField)
-                    ->addField($yearField)
+            $hostnameField = new \Kendo\Data\DataSourceSchemaModelField('hostname');
+            $hostnameField->type('string');
+
+            $uriField = new \Kendo\Data\DataSourceSchemaModelField('uri');
+            $uriField->type('string');
+
+            $referField = new \Kendo\Data\DataSourceSchemaModelField('refer');
+            $referField->type('string');
+
+            $model->id('id')
+                    ->addField($typeField)
+                    ->addField($messageField)
                     ->addField($datecreatedField)
-                    ->addField($creatorField);
+                    ->addField($ipField)
+                    ->addField($hostnameField)
+                    ->addField($uriField)
+                    ->addField($referField);
 
             $schema = new \Kendo\Data\DataSourceSchema();
 
@@ -148,54 +149,59 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
 
             // Configure data source - set transport, schema and enable batch mode
             $dataSource->transport($transport)
-                    ->pageSize(1)
+                    ->pageSize(10)
                     ->schema($schema)
                     ->batch(true);
 
+
             $grid = new \Kendo\UI\Grid('grid');
 
-            $nameField = new \Kendo\UI\GridColumn();
-            $nameField->field('name')
-                    ->width(50)
-                    ->title('Name');
+            $logsIDField = new \Kendo\UI\GridColumn();
+            $logsIDField->field('id')
+                    ->width(30)
+                    ->title('ID');
 
-            $relationshipField = new \Kendo\UI\GridColumn();
-            $relationshipField->field('relationship')
-                    ->width(50)
-                    ->title('Relationship');
-
-            $yearField = new \Kendo\UI\GridColumn();
-            $yearField->field('year')
-                    ->title('Year')
-                    ->width(20);
+            $typeField = new \Kendo\UI\GridColumn();
+            $typeField->field('type')
+                    ->width(30)
+                    ->title('Type');
 
             $datecreatedField = new \Kendo\UI\GridColumn();
             $datecreatedField->field('created')
-                    ->title('Date Created')
-                    ->width(20);
+                    ->width(50)
+                    ->title('Date Created');
 
-            $creatorField = new \Kendo\UI\GridColumn();
-            $creatorField->field('creator')
-                    ->title('Creator')
+            $ipField = new \Kendo\UI\GridColumn();
+            $ipField->field('ip')
+                    ->title('IP')
+                    ->width(50);
+            
+            $hostnameField = new \kendo\UI\GridColumn();
+            $hostnameField->field('hostname')
+                    ->title('Primary Email')
                     ->width(50);
 
-            /* $command = new \Kendo\UI\GridColumn();
-              $command->addCommandItem('destroy')
-              ->title('&nbsp;')
-              ->width(110); */
+            $uriField = new \kendo\UI\GridColumn();
+            $uriField->field('uri')
+                    ->title('URI')
+                    ->width(50);
 
-            $grid->addColumn($nameField, $relationshipField, $yearField, $datecreatedField, $creatorField)
+            $referField = new \Kendo\UI\GridColumn();
+            $referField->field('refer')
+                    ->title('Gender')
+                    ->width(50);
+
+
+            $grid->addColumn($logsIDField, $typeField, $hostnameField, $datecreatedField, $ipField, $hostnameField, $uriField, $referField)
                     ->dataSource($dataSource)
                     ->sortable(true)
                     ->filterable(true)
                     ->pageable(true)
-//                    ->addToolbarItem(new \Kendo\UI\GridToolbarItem('create'), new \Kendo\UI\GridToolbarItem('save'), new \Kendo\UI\GridToolbarItem('cancel'))
-//                    ->editable(true)
+                    //                    ->addToolbarItem(new \Kendo\UI\GridToolbarItem('create'), new \Kendo\UI\GridToolbarItem('save'), new \Kendo\UI\GridToolbarItem('cancel'))
+                    //                    ->editable(true)
                     ->height(150);
-
-            //Output the grid by echo-ing the result of the render method.
             echo $grid->render();
-            ?>
+           ?>
 
 
         </div>
