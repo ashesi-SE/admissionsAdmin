@@ -6,7 +6,7 @@
 /* MySQL Connection*/
 $database = "ashadmission";
 $username = "root";
-$password = "Dream1234";
+$password = "";
 $server = "localhost";
 
 
