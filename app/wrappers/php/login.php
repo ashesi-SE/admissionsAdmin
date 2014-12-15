@@ -116,6 +116,9 @@ if (isset($_REQUEST['username'])) {
 
 
 <form action="login.php" method="POST">
+    <div class="text-center">
+        <img src="img/Ashesi.png" class="text-center">
+    </div>
     <table border="1" align="center" width="50%" id="margin">
         <tr><td>
                 <table  align="center" width="80%">
