@@ -5,8 +5,8 @@
 //$db = new PDO("mysql:host=localhost;dbname=ashadmission;charset=utf8", 'root', 'Dream1234');
 /* MySQL Connection*/
 $database = "ashadmission";
-$username = "root";
-$password = "Dream1234";
+$username = "csashesi_nal15";
+$password = "db!9c2919";
 $server = "localhost";
 
 
@@ -191,4 +191,4 @@ if ($type == 'update') {
 header('Content-Type: application/json');
 
 echo json_encode($result);
-?>
+?>s
