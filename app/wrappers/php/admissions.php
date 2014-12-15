@@ -75,7 +75,7 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
 
                  <div class="top-right-corner">
                         <span class="white-text">USERS|</span>
-                        <span><a id="logout" href="AdminLOG.php">LOG OUT</a></span>
+                        <span><a id="logout" href="logout.php">LOG OUT</a></span>
                     </div>
                 </div>
             </div>

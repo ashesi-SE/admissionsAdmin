@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html >
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Data Saver : Login</title>
+        <title>Login</title>
         <!--icon-->
         <link href="img/Ashesi.png" rel="icon" />
         <!-- BOOTSTRAP STYLES-->
@@ -18,7 +16,7 @@
         <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' /> -->
     </head>
       <?php
-            if (isset($_REQUEST['username'])) {
+          /*  if (isset($_REQUEST['username'])) {
                 //the login form has been submitted
                 $username = $_REQUEST['username'];
                 $password = $_REQUEST['password'];
@@ -33,7 +31,7 @@
                     //if login returns false, then something is worng
                     $msg = "username or password is wrong";
                 }
-            }
+            }  */
         ?>
 
 
@@ -43,7 +41,10 @@
 
     </nav>
 
-    <div id="wrapper">
+	
+    <?php
+	/*
+	<div id="wrapper">
         <div class="col-xs-10 col-xs-offset-1  col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <div class="signup">
                 <!--SIGN UP Modal-->
@@ -62,7 +63,9 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> */
+	?>
+	
     </div>
 
 
@@ -102,14 +105,8 @@
             //call login to check username and password
             if (login($username, $password)) {
                 session_start(); //initiate session for the current login
-				$type="login";
-				$message="Successful";
-				//$ip=$_SERVER['REMOTE_ADDR'];//"10.10.21.234";
-				$ip=get_client_ip();
-				$hostName="local";
-				$uri=$_SERVER['REQUEST_URI'];
-				$refer="refer";
-				addtoLog($type,$message,$ip,$hostName,$uri,$refer);
+				
+				//addtoLog($type,$message,$ip,$hostName,$uri,$refer);
 //                loadUserProfile($username); //load user information into the session
                 header("location: admissions.php"); //redirect to home page
                 echo "<a href='gridIndex.php'>click here</a>"; //if redirect fails, provide a link
@@ -170,11 +167,13 @@ function login($username, $password) {
     $link = mysql_pconnect("localhost", "root", "") or die("Unable To Connect To Database Server");
     $db = mysql_select_db("ashadmission") or die("Unable To Connect To Admissions");
 
-    if ($response = mysql_query("SELECT email, firstName, lastName, role FROM users WHERE email= '$username' AND password='$password'")) {
-        $row = $response->mysql_fetch_assoc();
-        $userName= $row['email'];
+    if ($response = mysql_query("SELECT user_id,email, firstName, lastName, role FROM users WHERE email= '$username' AND password='$password'")) {
+       $row = mysql_fetch_assoc($response);
+	   $refer=$row['user_id'];
+        /*$userName= $row['email'];
         $role=$row['role'];
-        loadUserProfile($userName,$role);
+        loadUserProfile($userName,$role);*/
+		addtoLog($refer);
         return true;
     } else {
         echo mysql_error();
@@ -185,13 +184,21 @@ function login($username, $password) {
 function loadUserProfile($username,$role) {
     $_SESSION['username'] = $username;
     $_SESSION['role'] = $role;
+
     //$_SESSION['fullname'] = $fullname;
 }
 
-function addtoLog($type,$message,$ip,$hostName,$uri,$refer){
+function addtoLog($user){
 $link = mysql_pconnect("localhost", "root", "") or die("Unable To Connect To Database Server");
     $db = mysql_select_db("ashadmission") or die("Unable To Connect To Admissions");
-	if(mysql_query("INSERT INTO `logs`(`type`, `message`, `created`, `ip`, `hostname`, `uri`, `refer`) VALUES ('$type','$message',now(),'$ip','$hostName','$uri','$refer')")) 
+	//$type="login";
+				//$message="Successful";
+				//$ip=$_SERVER['REMOTE_ADDR'];//"10.10.21.234";
+				$ip=get_client_ip();
+				//$hostName="local";
+				$uri=$_SERVER['REQUEST_URI'];
+				//$refer="refer";
+	if(mysql_query("INSERT INTO `logs`(`type`, `message`, `created`, `ip`, `hostname`, `uri`, `refer`) VALUES ('login','Successful',now(),'$ip','local','$uri','$user')")) 
 {
           return true;
     }else{
