@@ -6,7 +6,7 @@
 /* MySQL Connection*/
 $database = "ashadmission";
 $username = "root";
-$password = "";
+$password = "Dream1234";
 $server = "localhost";
 
 
@@ -98,7 +98,14 @@ if ($type == 'create_seasons') {
 //read
 if ($type == 'read_admissions') {
     // Create SQL SELECT statement
-    $statement = mysql_query('SELECT * FROM admissions', $link);
+    $statement = mysql_query('select applicants.first_names,
+        applicants.middle_names, applicants.last_names, applicants.gender,
+        applicants.phone_primary,admissions.major, 
+        applications.season_id, applications.acceptance, applications.created, seasons.name,  
+        seasons.year,seasons.round,seasons.open_date,seasons.close_date,seasons.status FROM 
+        applications JOIN admissions ON applications.application_id=admissions.application_id
+        JOIN applicants ON admissions.application_id=applicants.application_id
+        JOIN seasons ON seasons.season_id=applications.season_id;', $link);
     while ($row = mysql_fetch_assoc($statement)) {
         $result[] = $row;
     }

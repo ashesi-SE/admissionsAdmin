@@ -55,6 +55,9 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
 
      
         <div >
+            <div class="span3">
+                <a href="export.php?type=read_ashesiSiblings" class="btn btn-large btn-danger">EXPORT As CSV</a> 
+            </div>
             <h1><center><i>ASHESI SIBLINGS</i></center></h1>
             <br>
             <?php

@@ -13,7 +13,7 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
         <meta name="description" content="">
         <meta name="author" content="">
         <link href="content/shared/styles/suite.css" rel="stylesheet"/>
-
+         <link href="img/Ashesi.png" rel="icon" />
         <link href="../../styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
         <link href="../../styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
 
@@ -63,7 +63,7 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
                     </button>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                             <li class="active"><a href="admissions.php"><b>Admissions </b><i class="icon-chevron-right"></i></a></li>
+                            <li class="active"><a href="admissions.php"><b>Admissions </b><i class="icon-chevron-right"></i></a></li>
                             <li ><a href="applications.php"><b>Applications </b><i class="icon-chevron-right"></i></a></li>
                             <li ><a href="applicants.php"> <b>Applicants</b> <i class="icon-chevron-right"></i></a></li>
                             <li><a href="ashesiSiblings.php"> <b>Ashesi Siblings</b> <i class="icon-chevron-right"></i></a></li>
@@ -73,187 +73,220 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
                         </ul>
                     </div><!--/.nav-collapse -->
 
-                 <div class="top-right-corner">
+                    <div class="top-right-corner">
                         <span class="white-text">USERS|</span>
                         <span><a id="logout" href="AdminLOG.php">LOG OUT</a></span>
                     </div>
                 </div>
             </div>
         </div>
-      
-                <div>
-                    <h1><center><i>ADMISSIONS</i></center></h1>
-                    <br>
-                    <?php
-                    require_once 'lib/Kendo/Autoload.php';
 
-                    $transport = new \Kendo\Data\DataSourceTransport();
+        <div>
+            <div class="span3">
+                <a href="export.php?type=read_admissions" class="btn btn-large btn-danger">EXPORT As CSV</a> 
+            </div>
+            <h1><center><i>ADMISSIONS</i></center></h1>
+            <br>
+            <?php
+            require_once 'lib/Kendo/Autoload.php';
 
-                    // Configure the remote service - a PHP file called 'products.php'
-                    // The query string parameter 'type' specifies the type of CRUD operation
+            $transport = new \Kendo\Data\DataSourceTransport();
 
-                    $create = new \Kendo\Data\DataSourceTransportCreate();
+            // Configure the remote service - a PHP file called 'products.php'
+            // The query string parameter 'type' specifies the type of CRUD operation
 
-                    $create->url('grid.php?type=create')
-                            ->contentType('application/json')
-                            ->type('POST');
+            $create = new \Kendo\Data\DataSourceTransportCreate();
 
-                    $read = new \Kendo\Data\DataSourceTransportRead();
+            $create->url('grid.php?type=create')
+                    ->contentType('application/json')
+                    ->type('POST');
 
-                    $read->url('grid.php?type=read_admissions')
-                            ->contentType('application/json')
-                            ->type('POST');
+            $read = new \Kendo\Data\DataSourceTransportRead();
 
-                    $update = new \Kendo\Data\DataSourceTransportUpdate();
+            $read->url('grid.php?type=read_admissions')
+                    ->contentType('application/json')
+                    ->type('POST');
 
-                    $update->url('grid.php?type=update')
-                            ->contentType('application/json')
-                            ->type('POST');
+            $update = new \Kendo\Data\DataSourceTransportUpdate();
 
-                    $destroy = new \Kendo\Data\DataSourceTransportDestroy();
+            $update->url('grid.php?type=update')
+                    ->contentType('application/json')
+                    ->type('POST');
 
-                    $destroy->url('grid.php?type=destroy')
-                            ->contentType('application/json')
-                            ->type('POST');
+            $destroy = new \Kendo\Data\DataSourceTransportDestroy();
 
-                    // Configure the transport. Send all data source parameters as JSON using the parameterMap setting
-                    $transport->create($create)
-                            ->read($read)
-                            ->update($update)
-                            ->destroy($destroy)
-                            ->parameterMap('function(data) {
-              return kendo.stringify(data);
-          }');
+            $destroy->url('grid.php?type=destroy')
+                    ->contentType('application/json')
+                    ->type('POST');
 
-                    // Configure the model
-                    $model = new \Kendo\Data\DataSourceSchemaModel();
+            // Configure the transport. Send all data source parameters as JSON using the parameterMap setting
+            $transport->create($create)
+                    ->read($read)
+                    ->update($update)
+                    ->destroy($destroy)
+                    ->parameterMap('function(data) {return kendo.stringify(data);}');
 
-                    $admissionsIDField = new \Kendo\Data\DataSourceSchemaModelField('admission_id');
-                    $admissionsIDField->type('number')
-                            ->editable(false)
-                            ->nullable(true);
+            // Configure the model
+            $model = new \Kendo\Data\DataSourceSchemaModel();
 
-                    $applicationIDField = new \Kendo\Data\DataSourceSchemaModelField('application_id');
-                    $applicationIDField->type('number')
-                            ->editable(false)
-                            ->nullable(true);
+            $admissionsIDField = new \Kendo\Data\DataSourceSchemaModelField('admission_id');
+            $admissionsIDField->type('number')
+                    ->editable(false)
+                    ->nullable(true);
 
-                    $majorField = new \Kendo\Data\DataSourceSchemaModelField('major');
-                    $majorField->type('string')
-                            ->validation(array('required' => true));
+            $applicationIDField = new \Kendo\Data\DataSourceSchemaModelField('application_id');
+            $applicationIDField->type('number')
+                    ->editable(false)
+                    ->nullable(true);
 
-                    $appliedBeforeField = new \Kendo\Data\DataSourceSchemaModelField('applied_before');
-                    $appliedBeforeField->type('boolean');
+            $majorField = new \Kendo\Data\DataSourceSchemaModelField('major');
+            $majorField->type('string')
+                    ->validation(array('required' => true));
 
-                    $appliedBeforeYearField = new \Kendo\Data\DataSourceSchemaModelField('applied_before_year');
-                    $appliedBeforeYearField->type('date');
+            $appliedBeforeField = new \Kendo\Data\DataSourceSchemaModelField('applied_before');
+            $appliedBeforeField->type('boolean');
 
-                    $wantsHousingField = new \Kendo\Data\DataSourceSchemaModelField('wants_housing');
-                    $wantsHousingField->type('boolean');
+            $appliedBeforeYearField = new \Kendo\Data\DataSourceSchemaModelField('applied_before_year');
+            $appliedBeforeYearField->type('date');
 
-                    $wantsFinAidField = new \Kendo\Data\DataSourceSchemaModelField('wants_fin_aid');
-                    $wantsFinAidField->type('boolean');
+            $wantsHousingField = new \Kendo\Data\DataSourceSchemaModelField('wants_housing');
+            $wantsHousingField->type('boolean');
 
-                    $hasAshesiSiblingField = new \Kendo\Data\DataSourceSchemaModelField('has_ashesi_siblings');
-                    $hasAshesiSiblingField->type('boolean');
+            $wantsFinAidField = new \Kendo\Data\DataSourceSchemaModelField('wants_fin_aid');
+            $wantsFinAidField->type('boolean');
 
-                    $hasSponsorField = new \Kendo\Data\DataSourceSchemaModelField('has_sponsor');
-                    $hasSponsorField->type('boolean');
+            $hasAshesiSiblingField = new \Kendo\Data\DataSourceSchemaModelField('has_ashesi_siblings');
+            $hasAshesiSiblingField->type('boolean');
 
-                    $dismissedBeforeField = new \Kendo\Data\DataSourceSchemaModelField('dismissed_before');
-                    $dismissedBeforeField->type('boolean');
+            $hasSponsorField = new \Kendo\Data\DataSourceSchemaModelField('has_sponsor');
+            $hasSponsorField->type('boolean');
 
-                    $dismissedBeforeInstNameField = new \Kendo\Data\DataSourceSchemaModelField('dismissed_institution_name');
-                    $dismissedBeforeInstNameField->type('string');
+            $dismissedBeforeField = new \Kendo\Data\DataSourceSchemaModelField('dismissed_before');
+            $dismissedBeforeField->type('boolean');
 
-                    $dismissedBeforeInstLocationField = new \Kendo\Data\DataSourceSchemaModelField('dismissed_institution_location');
-                    $dismissedBeforeInstLocationField->type('string');
+            $dismissedBeforeInstNameField = new \Kendo\Data\DataSourceSchemaModelField('dismissed_institution_name');
+            $dismissedBeforeInstNameField->type('string');
 
-                    $dismissedexplanationField = new \Kendo\Data\DataSourceSchemaModelField('dismissed_explanation');
-                    $dismissedexplanationField->type('string');
+            $applicantFirstnameField = new \Kendo\Data\DataSourceSchemaModelField('first_names');
+            $applicantFirstnameField->type('string');
 
-                    $primaryLanguageField = new \Kendo\Data\DataSourceSchemaModelField('primary_language');
-                    $primaryLanguageField->type('string');
+            $applicantMiddlenameField = new \Kendo\Data\DataSourceSchemaModelField('middle_names');
+            $applicantMiddlenameField->type('string');
 
-                    $scholasticDitinctionField = new \Kendo\Data\DataSourceSchemaModelField('scholastic_distinction');
-                    $scholasticDitinctionField->type('string');
+            $applicantLastnameField = new \Kendo\Data\DataSourceSchemaModelField('last_names');
+            $applicantLastnameField->type('string');
 
-                    $careerField = new \Kendo\Data\DataSourceSchemaModelField('career');
-                    $careerField->type('string');
+            $genderField = new \Kendo\Data\DataSourceSchemaModelField('gender');
+            $genderField->type('string');
 
-                    $creatorField = new \Kendo\Data\DataSourceSchemaModelField('creator');
-                    $creatorField->type('string');
+            $phonePrimaryField = new \Kendo\Data\DataSourceSchemaModelField('phone_primary');
+            $phonePrimaryField->type('string');
 
-                    $datecreatedField = new \Kendo\Data\DataSourceSchemaModelField('created');
-                    $datecreatedField->type('date');
+            $dismissedBeforeInstLocationField = new \Kendo\Data\DataSourceSchemaModelField('dismissed_institution_location');
+            $dismissedBeforeInstLocationField->type('string');
 
-                    $dateModifiedField = new \Kendo\Data\DataSourceSchemaModelField('modified');
-                    $dateModifiedField->type('date');
+            $dismissedexplanationField = new \Kendo\Data\DataSourceSchemaModelField('dismissed_explanation');
+            $dismissedexplanationField->type('string');
 
-                    $model->id('admission_id')
-                            ->addField($majorField)
-                            ->addField($appliedBeforeField)
-                            ->addField($appliedBeforeYearField)
-                            ->addField($wantsHousingField)
-                            ->addField($wantsFinAidField);
+            $primaryLanguageField = new \Kendo\Data\DataSourceSchemaModelField('primary_language');
+            $primaryLanguageField->type('string');
 
-                    $schema = new \Kendo\Data\DataSourceSchema();
+            $scholasticDitinctionField = new \Kendo\Data\DataSourceSchemaModelField('scholastic_distinction');
+            $scholasticDitinctionField->type('string');
 
-                    $schema->model($model);
+            $careerField = new \Kendo\Data\DataSourceSchemaModelField('career');
+            $careerField->type('string');
 
-                    $dataSource = new \Kendo\Data\DataSource();
+            $creatorField = new \Kendo\Data\DataSourceSchemaModelField('creator');
+            $creatorField->type('string');
 
-                    // Configure data source - set transport, schema and enable batch mode
-                    $dataSource->transport($transport)
-                            ->pageSize(10)
-                            ->schema($schema)
-                            ->batch(true);
+            $datecreatedField = new \Kendo\Data\DataSourceSchemaModelField('created');
+            $datecreatedField->type('date');
 
-                    $grid = new \Kendo\UI\Grid('grid');
+            $dateModifiedField = new \Kendo\Data\DataSourceSchemaModelField('modified');
+            $dateModifiedField->type('date');
 
-                    $major = new \Kendo\UI\GridColumn();
-                    $major->field('major')
-                            ->width(50)
-                            ->title('Major');
+            $model->id('admission_id')
+                    ->addField($majorField)
+                    ->addField($appliedBeforeField)
+                    ->addField($appliedBeforeYearField)
+                    ->addField($wantsHousingField)
+                    ->addField($applicantFirstnameField)
+                    ->addField($applicantMiddlenameField)
+                    ->addField($applicantLastnameField)
+                    ->addField($phonePrimaryField)
+                    ->addField($wantsFinAidField);
 
-                    $appliedBefore = new \Kendo\UI\GridColumn();
-                    $appliedBefore->field('applied_before')
-                            ->width(50)
-                            ->title('Applied Before');
+            $schema = new \Kendo\Data\DataSourceSchema();
 
-                    $appliedBeforeYear = new \Kendo\UI\GridColumn();
-                    $appliedBeforeYear->field('applied_before_year')
-                            ->width(50)
-                            ->title('Year Applied In Stock');
+            $schema->model($model);
 
-                    $wantsHousing = new \Kendo\UI\GridColumn();
-                    $wantsHousing->field('wants_housing')
-                            ->title('Wants Housing')
-                            ->width(50);
+            $dataSource = new \Kendo\Data\DataSource();
 
-                    $wantsFinAid = new \Kendo\UI\GridColumn();
-                    $wantsFinAid->field('wants_fin_aid')
-                            ->title('Wants Financial Aid')
-                            ->width(50);
+            // Configure data source - set transport, schema and enable batch mode
+            $dataSource->transport($transport)
+                    ->pageSize(10)
+                    ->schema($schema)
+                    ->batch(true);
 
-                    /* $command = new \Kendo\UI\GridColumn();
-                      $command->addCommandItem('destroy')
-                      ->title('&nbsp;')
-                      ->width(110); */
+            $grid = new \Kendo\UI\Grid('grid');
 
-                    $grid->addColumn($major, $appliedBefore, $appliedBeforeYear, $wantsHousing, $wantsFinAid)
-                            ->dataSource($dataSource)
-                            ->sortable(true)
-                            ->filterable(true)
-                            ->pageable(true)
+            $applicantnameField = new \Kendo\UI\GridColumn();
+            $applicantnameField->field('first_names', 'middle_names', 'last_names')
+                    ->title('Applicant\' Name')
+                    ->width(50);
+
+            $major = new \Kendo\UI\GridColumn();
+            $major->field('major')
+                    ->width(50)
+                    ->title('Major');
+
+            $appliedBefore = new \Kendo\UI\GridColumn();
+            $appliedBefore->field('applied_before')
+                    ->width(50)
+                    ->title('Applied Before');
+
+            $appliedBeforeYear = new \Kendo\UI\GridColumn();
+            $appliedBeforeYear->field('applied_before_year')
+                    ->width(50)
+                    ->title('Year Applied In Stock');
+
+            $wantsHousing = new \Kendo\UI\GridColumn();
+            $wantsHousing->field('wants_housing')
+                    ->title('Wants Housing')
+                    ->width(50);
+
+
+            $wantsFinAid = new \Kendo\UI\GridColumn();
+            $wantsFinAid->field('wants_fin_aid')
+                    ->title('Wants Financial Aid')
+                    ->width(50);
+            
+            $phonePrimary = new \Kendo\UI\GridColumn();
+            $phonePrimary->field('phone_primary')
+                    ->title('Primary Phone')
+                    ->width(50);
+            
+            /* $command = new \Kendo\UI\GridColumn();
+              $command->addCommandItem('destroy')
+              ->title('&nbsp;')
+              ->width(110); */
+
+            $grid->addColumn($applicantnameField, $major, $phonePrimary, $appliedBefore, $appliedBeforeYear, $wantsHousing, $wantsFinAid)
+                    ->dataSource($dataSource)
+                    ->sortable(true)
+                    ->filterable(true)
+                    ->pageable(true)
+                    ->scrollable(true)
+
 //                    ->addToolbarItem(new \Kendo\UI\GridToolbarItem('create'), new \Kendo\UI\GridToolbarItem('save'), new \Kendo\UI\GridToolbarItem('cancel'))
 //                    ->editable(true)
-                            ->height(300);
+                    ->height(300);
 
-                    //Output the grid by echo-ing the result of the render method.
-                    echo $grid->render();
-                    ?>
-             
+            //Output the grid by echo-ing the result of the render method.
+            echo $grid->render();
+            ?>
+
 
         </div>
     </body>
