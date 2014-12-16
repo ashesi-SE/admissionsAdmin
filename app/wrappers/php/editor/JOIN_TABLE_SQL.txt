@@ -1,0 +1,9 @@
+$query=$db->sql_query("select applicants.first_names,
+applicants.middle_names, applicants.last_names, applicants.gender,
+applicants.phone_primary,admissions.major, 
+applications.season_id, applications.acceptance, applications.created, seasons.name,  
+seasons.year,seasons.round,seasons.open_date,seasons.close_date,seasons.status FROM applications JOIN admissions ON applications.application_id=admissions.application_id
+JOIN applicants ON
+admissions.application_id=applicants.application_id
+JOIN seasons ON
+seasons.season_id=applications.season_id;");
