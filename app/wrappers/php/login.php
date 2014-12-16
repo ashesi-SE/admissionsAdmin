@@ -103,9 +103,15 @@ if (isset($_REQUEST['username'])) {
     if (login($username, $password)) {
         session_start(); //initiate session for the current login
         //addtoLog($type,$message,$ip,$hostName,$uri,$refer);
+<<<<<<< HEAD
                 loadUserProfile($username); //load user information into the session
         header("location: startbootstrap-sb-admin-1.0.0\index.php"); //redirect to home page
         echo "<a href='C:\xampp\htdocs\phpKendoTrial\wrappers\php\startbootstrap-sb-admin-1.0.0\index.php'>click here</a>"; //if redirect fails, provide a link
+=======
+//                loadUserProfile($username); //load user information into the session
+        header("location: http://50.63.128.135/~csashesi/class2015/niena-alhassan/admin/admissions.php"); //redirect to home page
+        echo "<a href='http://50.63.128.135/~csashesi/class2015/niena-alhassan/admin/gridIndex.php'>click here</a>"; //if redirect fails, provide a link
+>>>>>>> d9698e1591ec642518b997e82380a6c363d5d133
         exit();
     } else {
         //if login returns false, then something is worng
@@ -161,7 +167,11 @@ if (isset($_REQUEST['username'])) {
 
 function login($username, $password) {
 //    $pword = md5($password);
+<<<<<<< HEAD
     $link = mysql_pconnect("localhost", "root", "Dream1234") or die("Unable To Connect To Database Server");
+=======
+    $link = mysql_pconnect("localhost", "csashesi_nal15", "db!9c2919") or die("Unable To Connect To Database Server");
+>>>>>>> d9698e1591ec642518b997e82380a6c363d5d133
     $db = mysql_select_db("ashadmission") or die("Unable To Connect To Admissions");
     if ($response = mysql_query("SELECT user_id,email, firstName, lastName, role FROM users WHERE email= '$username' AND password='$password'")) {
         $row = mysql_fetch_assoc($response);
@@ -184,7 +194,11 @@ function loadUserProfile($username, $role) {
 }
 
 function addtoLog($user) {
+<<<<<<< HEAD
     $link = mysql_pconnect("localhost", "root", "Dream1234") or die("Unable To Connect To Database Server");
+=======
+    $link = mysql_pconnect("localhost", "csashesi_nal15", "db!9c2919") or die("Unable To Connect To Database Server");
+>>>>>>> d9698e1591ec642518b997e82380a6c363d5d133
     $db = mysql_select_db("ashadmission") or die("Unable To Connect To Admissions");
     //$type="login";
     //$message="Successful";

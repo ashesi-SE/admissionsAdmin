@@ -16,7 +16,7 @@ class db{
  
  function connect(){
  
- $this->link=mysql_connect("localhost","root","Dream1234");
+ $this->link=mysql_connect("localhost", "csashesi_nal15", "db!9c2919");
  mysql_select_db("ashadmission",$this->link);
  //echo "here";
  
@@ -24,7 +24,7 @@ class db{
  return true;
  }
  
- $this->link=mysql_connect("localhost","root","Dream1234");
+ $this->link=mysql_connect("localhost", "csashesi_nal15", "db!9c2919");
  if(!$this->link){
  $this->str_error="fail to connect to db";
  return false;
