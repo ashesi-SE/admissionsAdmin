@@ -200,9 +200,10 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
                     ->sortable(true)
                     ->filterable(true)
                     ->pageable(true)
+                    ->scrollable(true)
                     //                    ->addToolbarItem(new \Kendo\UI\GridToolbarItem('create'), new \Kendo\UI\GridToolbarItem('save'), new \Kendo\UI\GridToolbarItem('cancel'))
                     //                    ->editable(true)
-                    ->height(150);
+                    ->height(400);
             echo $grid->render();
            ?>
 

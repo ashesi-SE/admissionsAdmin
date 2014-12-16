@@ -103,9 +103,9 @@ if (isset($_REQUEST['username'])) {
     if (login($username, $password)) {
         session_start(); //initiate session for the current login
         //addtoLog($type,$message,$ip,$hostName,$uri,$refer);
-//                loadUserProfile($username); //load user information into the session
-        header("location: admissions.php"); //redirect to home page
-        echo "<a href='gridIndex.php'>click here</a>"; //if redirect fails, provide a link
+                loadUserProfile($username); //load user information into the session
+        header("location: startbootstrap-sb-admin-1.0.0\index.php"); //redirect to home page
+        echo "<a href='C:\xampp\htdocs\phpKendoTrial\wrappers\php\startbootstrap-sb-admin-1.0.0\index.php'>click here</a>"; //if redirect fails, provide a link
         exit();
     } else {
         //if login returns false, then something is worng
@@ -161,7 +161,7 @@ if (isset($_REQUEST['username'])) {
 
 function login($username, $password) {
 //    $pword = md5($password);
-    $link = mysql_pconnect("localhost", "root", "") or die("Unable To Connect To Database Server");
+    $link = mysql_pconnect("localhost", "root", "Dream1234") or die("Unable To Connect To Database Server");
     $db = mysql_select_db("ashadmission") or die("Unable To Connect To Admissions");
     if ($response = mysql_query("SELECT user_id,email, firstName, lastName, role FROM users WHERE email= '$username' AND password='$password'")) {
         $row = mysql_fetch_assoc($response);
@@ -184,7 +184,7 @@ function loadUserProfile($username, $role) {
 }
 
 function addtoLog($user) {
-    $link = mysql_pconnect("localhost", "root", "") or die("Unable To Connect To Database Server");
+    $link = mysql_pconnect("localhost", "root", "Dream1234") or die("Unable To Connect To Database Server");
     $db = mysql_select_db("ashadmission") or die("Unable To Connect To Admissions");
     //$type="login";
     //$message="Successful";

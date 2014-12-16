@@ -54,6 +54,9 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
             </div>
         </div>
         <div>
+            <div class="span3">
+                <a href="export.php?type=read_seasons" class="btn btn-large btn-danger">EXPORT As CSV</a> 
+            </div>
             <h1><center><i>SEASONS</i></center></h1>
             <br> 
             <?php
@@ -100,7 +103,7 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
 
             $seasonIDField = new \Kendo\Data\DataSourceSchemaModelField('season_id');
             $seasonIDField->type('number')
-                    ->editable(false)
+//                    ->editable(false)
                     ->nullable(true);
 
             $nameField = new \Kendo\Data\DataSourceSchemaModelField('name');
@@ -115,22 +118,22 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
 
             $openDateField = new \Kendo\Data\DataSourceSchemaModelField('open_date');
             $openDateField->type('date')
-                    ->editable(true)
+//                    ->editable(true)
                     ->nullable(false);
 
             $closeDateField = new \Kendo\Data\DataSourceSchemaModelField('close_date');
             $closeDateField->type('date')
-                    ->editable(true)
+//                    ->editable(true)
                     ->nullable(false);
 
             $descriptionField = new \Kendo\Data\DataSourceSchemaModelField('description');
             $descriptionField->type('string')
-                    ->editable(true)
+//                    /->editable(true)
                     ->nullable(true);
 
             $statusField = new \Kendo\Data\DataSourceSchemaModelField('status');
             $statusField->type('string')
-                    ->editable(true)
+//                    ->editable(true)
                     ->nullable(false);
 
 
@@ -206,13 +209,18 @@ if (!isset($_SESSION['username'])) { //check if the user data is in the session
                     ->title('&nbsp;')
                     ->width(50);
 
-            $grid->addColumn($nameField, $yearField, $roundField, $openDateField, $closeDateField, $descriptionField, $statusField, $command)
+//            $pdf = new \Kendo\UI\GridPdf();
+//            $pdf->fileName('Kendo UI Grid Export.pdf')
+//                    ->proxyURL('pdf-export.php?type=save');
+
+            $grid->addColumn($nameField, $yearField, $roundField, $openDateField, $closeDateField, $descriptionField, $statusField)
                     ->addToolbarItem(new \Kendo\UI\GridToolbarItem('create'), new \Kendo\UI\GridToolbarItem('save'), new \Kendo\UI\GridToolbarItem('cancel'))
                     ->dataSource($dataSource)
+                    ->editable(true)
                     ->sortable(true)
                     ->filterable(true)
                     ->pageable(true)
-                    ->height(300);
+                    ->height(600);
 
             //Output the grid by echo-ing the result of the render method.
             echo $grid->render();
